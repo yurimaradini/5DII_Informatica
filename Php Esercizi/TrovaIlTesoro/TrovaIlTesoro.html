@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Trova il Tesoro</title>
+    </head>
+
+    <body>
+        <form action="TrovaIlTesoro.php" method="POST">
+            
+            <input type="submit" name="1" onclick="select(this)">
+            <input type="submit" name="2" onclick="select(this)">
+            <input type="submit" name="3" onclick="select(this)">
+            <input type="submit" name="4" onclick="select(this)">
+            <input type="submit" name="5" onclick="select(this)">
+            <input type="submit" name="6" onclick="select(this)">
+            <input type="submit" name="7" onclick="select(this)">
+            <input type="submit" name="8" onclick="select(this)">
+            <input type="submit" name="9" onclick="select(this)">
+            <input type="submit" name="10" onclick="select(this)">
+        </form>
+        
+    </body>
+
+    <script>
+        let guessed = [];
+        function select(button) {
+            if (!guessed.includes(button)) {
+                guessed.unshift(button);
+                guessed.pop();
+            }
+            console.log("ciao1");
+            for (btn of guessed) {
+                console.log("ciao");
+                btn.style.color = "green;"
+            }
+
+        }
+    </script>
+</html>
