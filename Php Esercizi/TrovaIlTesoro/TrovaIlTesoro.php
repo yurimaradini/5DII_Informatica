@@ -1,12 +1,93 @@
+<?php 
+
+session_start();
+
+if (!isset($_SESSION['tesoro1'])) {
+    echo "La sessione è ricominciata";
+    $num1 = rand(1, 10);
+    do
+    {
+        $num2 = rand(1, 10);
+    } while ($num2 == $num1);
+
+    $_SESSION['tesoro1'] = $num1;
+    $_SESSION['tesoro2'] = $num2;
+    
+    echo $_SESSION['tesoro1'] . " - " . $_SESSION['tesoro2'];
+    $_SESSION['errori'] = 0;
+    $_SESSION['trovati'] = 0;
+}
+?>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Trova il Tesoro</title>
+    </head>
+
+    <body>
+        <form action="TrovaIlTesoro.php" method="POST">
+            <input type="submit" value="1" name="button">
+            <input type="submit" value="2" name="button">
+            <input type="submit" value="3" name="button">
+            <input type="submit" value="4" name="button">
+            <input type="submit" value="5" name="button">
+            <input type="submit" value="6" name="button">
+            <input type="submit" value="7" name="button">
+            <input type="submit" value="8" name="button">
+            <input type="submit" value="9" name="button">
+            <input type="submit" value="10" name="button">
+        </form>
+        
+    </body>
+
+    <!-- <script>
+        let guessed = [];
+        function select(button) {
+            if (!guessed.includes(button)) {
+                guessed.unshift(button);
+                guessed.pop();
+            }
+            console.log("ciao1");
+            for (btn of guessed) {
+                console.log("ciao");
+                btn.style.color = "green;"
+            }
+
+        }
+    </script> -->
+</html>
+
 <?php
+    if (isset($_POST['button']) && $_POST['button'] != $_SESSION['tesoro2'] && $_POST['button'] != $_SESSION['tesoro1']) {
+        
+        $_SESSION['errori']++;
+        echo "errori:" . $_SESSION['errori'];
 
-$num1 = rand(0, 9);
-do
-{
-    $num2 = rand(0, 9);
-} while ($num2 == $num1);
+        if($_SESSION['errori'] >= 2) {
+            echo "<script type='text/javascript'>alert('Hai esaurito i tentativi! I tesori cambieranno posizione.');</script>";
+            unset($_POST['button']);
+            unset($_POST['tesoro1']);
+            session_destroy();
+            header('Refresh:0');
+        }
+    }
+    else if (isset($_POST['button'])){
+        echo $_POST['button'] . " trovato!";
+        if($_SESSION['trovati'] != $_POST['button'] && $_SESSION['trovati'] != 0) {
+            echo "<script type='text/javascript'>alert('Hai vinto! Gioca ancora!');</script>";
+            unset($_POST['button']);
+            unset($_POST['tesoro1']);
+            session_destroy();
+            header('Refresh:0');
+        }
+        else {
+            $_SESSION['trovati'] = $_POST['button'];
+        }
 
-print_r($_POST);
-$guess1 = $_POST[0];
-$guess2 = $_POST[1];
+    }
+
+
 ?>
