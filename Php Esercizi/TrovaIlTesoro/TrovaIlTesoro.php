@@ -3,7 +3,6 @@
 session_start();
 
 if (!isset($_SESSION['tesoro1'])) {
-    echo "La sessione è ricominciata";
     $num1 = rand(1, 10);
     do
     {
@@ -13,7 +12,6 @@ if (!isset($_SESSION['tesoro1'])) {
     $_SESSION['tesoro1'] = $num1;
     $_SESSION['tesoro2'] = $num2;
     
-    echo $_SESSION['tesoro1'] . " - " . $_SESSION['tesoro2'];
     $_SESSION['errori'] = 0;
     $_SESSION['trovati'] = 0;
 }
@@ -43,21 +41,6 @@ if (!isset($_SESSION['tesoro1'])) {
         
     </body>
 
-    <!-- <script>
-        let guessed = [];
-        function select(button) {
-            if (!guessed.includes(button)) {
-                guessed.unshift(button);
-                guessed.pop();
-            }
-            console.log("ciao1");
-            for (btn of guessed) {
-                console.log("ciao");
-                btn.style.color = "green;"
-            }
-
-        }
-    </script> -->
 </html>
 
 <?php
@@ -66,7 +49,7 @@ if (!isset($_SESSION['tesoro1'])) {
         $_SESSION['errori']++;
         echo "errori:" . $_SESSION['errori'];
 
-        if($_SESSION['errori'] >= 2) {
+        if($_SESSION['errori'] >= 3) {
             echo "<script type='text/javascript'>alert('Hai esaurito i tentativi! I tesori cambieranno posizione.');</script>";
             unset($_POST['button']);
             unset($_POST['tesoro1']);
