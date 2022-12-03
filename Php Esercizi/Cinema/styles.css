@@ -1,0 +1,40 @@
+body {
+    background-color: black;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#login_button > input {
+    height: 30px;
+    width: 100px;
+    border-radius: 10px;
+    background-color: black;
+    border: orange 2px solid;
+    color: white;
+}
+/* 
+#login {
+    display: flex;
+    align-items:center;
+    flex-direction: column;
+    background-color: white;
+    color: gray;
+}
+
+#login input {
+    border: gray 2px solid;
+    width: 90%;
+    margin: 10px 0px 10px 0px;
+}
+
+#login input[type="submit"] {
+    border: orange 2px solid;
+}
+
+#login > u {
+    color: black;
+} */
