@@ -20,6 +20,8 @@
     </form>
   </nav>
 
+  <div class='flex-col flex-nowrap justify-center h-fit min-h-fit px-5'>
+
 <?php 
 
 require_once 'dbconfig.php';
@@ -34,28 +36,30 @@ $query = $dbh->prepare($sql); //irrilevante perchè la query non contiene parame
 
 $query->execute();
 
-$res = $query->fetch(PDO::FETCH_ASSOC);
+$res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-?>
-  
-  <div class="flex-col flex-nowrap justify-center h-fit min-h-fit px-5">
-    <!-- MOVIE -->
-    <div class="w-full min-w-52 flex h-fit min-h-fit max-h-52 p-2 border-2 rounded border-gray-400 my-6"> <!-- max-w-sm -->
-      <div class="h-30 w-32 mb-1 flex-none bg-contain bg-no-repeat text-center overflow-hidden" style="background-image: url('assets/avatar.jpg')" title="Avatar - Le vie dell'acqua"> <!--h-48 rounded-t-->
+
+foreach ($res as $movie) {
+  echo "<!-- MOVIE -->
+  <div class='w-full min-w-52 flex align-center h-fit min-h-fit p-2 border-2 rounded border-gray-400 my-6'> <!-- max-w-sm -->
+    <div class='h-30 w-32 mt-1 flex-none bg-contain bg-no-repeat text-center overflow-hidden' style='background-image: url(".$movie['Thumbnail'].")' title='Avatar - Le vie dell'acqua'> <!--h-48 rounded-t-->
+    </div>
+    <div class='bg-black rounded-b-none rounded-r flex flex-col justify-between leading-3 ml-2'> <!--border-l rounded-b-->
+      <div class='mb-2'>
+        <div class='text-white font-bold text-xl mb-2'>".$movie['Title']."</div>
+        <p class='text-gray-400 text-sm '>".$movie['Plot']."</p>
       </div>
-      <div class="bg-black rounded-b-none rounded-r flex flex-col justify-between leading-3 ml-2"> <!--border-l rounded-b-->
-        <div class="mb-2">
-          <div class="text-white font-bold text-xl mb-2">Titolo Film</div>
-          <p class="text-gray-400 text-base">Trama Film Trama Film Trama Film Trama Film Trama Film Trama Film Trama Film Trama Film Trama Film Trama Film Trama Film</p>
-        </div>
-        <div class="flex items-center">
-          <form action="film.php" method="POST">
-            <button type="submit" value="film_Id" class="group relative w-50 justify-left rounded-md border-2 border-transparent bg-black border-orange-500 py-2 px-4 text-sm font-medium text-white hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-              ACQUISTA ORA
-            </button>
-          </form>
-        </div>
+      <div class='flex items-center'>
+        <form action='film.php' method='POST'>
+          <button type='submit' name='movie' value=".$movie['Id']."  class='group relative w-50 justify-left rounded-md border-2 border-transparent bg-black border-orange-500 py-2 px-4 text-sm font-medium text-white hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'>
+          ACQUISTA ORA
+          </button>
+        </form>
       </div>
     </div>
+  </div>";
+}
+?>
 
+  </div>
 </body>

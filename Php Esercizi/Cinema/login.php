@@ -31,7 +31,7 @@ $_SESSION['Email'] = $res['Email'];
 $_SESSION['Password'] = $res['Password'];
 
 header('Content-Type: application/text; charset-utf-8');
-header('Location: home.html');
+header('Location: home.php');
 exit(0);
 
 
