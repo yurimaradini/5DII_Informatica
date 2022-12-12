@@ -23,7 +23,6 @@
   <div class='flex-col flex-nowrap justify-center h-fit min-h-fit px-5'>
 
 <?php 
-
 require_once 'dbconfig.php';
 
 $sql = "SELECT `Id`, `Title`, `Plot`, `Thumbnail` 

@@ -57,7 +57,7 @@ $projections = $query2->fetchAll(PDO::FETCH_ASSOC);
   <section class="mb-32 text-gray-800 text-justify">
         <div class="block rounded-lg bg-black px-10 ">
         <div class="flex flex-wrap items-center justify-evenly">
-            <div class="basis-auto block flex w-52">
+            <div class="basis-auto flex w-52">
             <img src=<?=$movie['Thumbnail']?> alt="Trendy Pants and Shoes"
                 class="w-full rounded-t-lg" />
             </div>
@@ -67,30 +67,37 @@ $projections = $query2->fetchAll(PDO::FETCH_ASSOC);
                 <p class="text-white text-md mb-6">
                 <?=$movie['Plot']?>
                 </p>
+                <form action="room.php" method="POST">
                 <div class="flex flex-wrap mb-6">
                     <ul class="flex flex-wrap gap-2">
 
 <?php
-foreach ($projections as $proj)
-echo "<li>
-        <input type='radio' id='hosting-small' name='hosting' value=".$proj['Id']." class='hidden peer' required>
-        <label for='hosting-small' class='inline-flex justify-between items-center p-2 w-min-content text-gray-400 bg-gray-800 rounded-lg border border-gray-200 cursor-pointer peer-checked:border-orange-500 peer-checked:text-orange-500 hover:text-orange-300 hover:border-orange-300 hover:bg-gray-700 '>                           
+$i = 0;
+
+foreach ($projections as $proj) {
+
+  echo "<li>
+        <input type='radio' id='hosting-small" . $i . "' name='projection' value=" . $proj['Id'] . " class='hidden peer' required>
+        <label for='hosting-small" . $i . "' class='inline-flex justify-between items-center p-2 w-min-content text-gray-400 bg-gray-800 rounded-lg border border-gray-200 cursor-pointer peer-checked:border-orange-500 peer-checked:text-orange-500 hover:text-orange-300 hover:border-orange-300 hover:bg-gray-700 '>                           
         <div class='block'>
-            <div class='w-min-content text-lg font-semibold'>".$proj['Day']. " - " .$proj['Time']."
+            <div class='w-min-content text-lg font-semibold'>" . $proj['Day'] . " - " . $proj['Time'] . "
             </div>
-            <div class='w-full'>Sala ".$proj['Room']."
+            <div class='w-full'>Sala " . $proj['Room'] . "
             </div>
         </div>
         <svg aria-hidden='true' class='ml-3 w-6 h-6' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z' clip-rule='evenodd'></path></svg>
         </label>
       </li>";
+
+  $i++;
+}
 ?>
-                </ul>
-            </div>
-            <button type="button"
-              class="inline-block px-7 py-3 bg-gray-800 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">
-              Buy now
-            </button>
+                  </ul>
+                </div>
+                <button type="submit" class="inline-block px-7 py-3 bg-gray-800 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">
+                  AVANTI
+                </button>
+            </form>
           </div>
         </div>
       </div>
