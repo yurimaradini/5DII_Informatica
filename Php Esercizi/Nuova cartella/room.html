@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Rossi Cinema - Selezione posti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    
+    <!-- <div class="flex flex-wrap flex-shrink">
+        <div class="w-52 h-10 bg-black bg-contain bg-no-repeat bg-[url('https://th.bing.com/th/id/OIP.-qpWpwXPkPBP1rfxA1tRPQHaHa?pid=ImgDet&rs=1')]"></div>
+        <div class="w-52" ></div>
+        <div class="w-52" ></div>
+        <div class="w-52" ></div>
+        <div class="w-52" ></div>
+    </div> -->
+
+    <form action="room.php" method="POST">
+    <div class=" justify-center  flex flex-wrap flex-col ">
+        <div class=" justify-center flex flex-nowrap flex-row ">
+            <div id="1" onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>  
+        </div>
+        <div class=" justify-center flex flex-wrap flex-row ">
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+        </div>
+        <div class=" justify-center flex flex-wrap flex-row ">
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+            <div onclick="select(this)" class="w-8 h-12 rounded-t-lg bg-neutral-700 m-2 hover:bg-neutral-900 hover:scale-110 duration-75"> </div>
+        </div>
+        <div class="w-8 h-12 rounded-t-lg bg-neutral-700  "> </div>
+        </div>
+
+        <input type="hidden" name="selected_buttons" value="" >
+    </form>
+        <script>
+            function select(button) {
+                console.log(button.classList)
+
+                if(button.contains("bg-red-500")) {
+                    button.classList.remove("bg-red-500");
+                    document.getElementById("selected_buttons").value += button.id;
+                    return;
+                }
+                button.classList.add("bg-red-500");
+
+            }
+        </script>
+</body>
+</html>
