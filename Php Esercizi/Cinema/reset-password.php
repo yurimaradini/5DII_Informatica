@@ -12,16 +12,15 @@ $sql = "SELECT `Id`
 $query = $dbh->prepare($sql);
 
 $query->bindParam(':em', $email, PDO::PARAM_STR);
-//$query->bindParam(':pw', $password, PDO::PARAM_STR);
 
 $query->execute();
 
 $userId = $query->fetch(PDO::FETCH_ASSOC);
 
-if($userId == false) {
+if($userId != false) {
     $sql2 = "UPDATE `users`
-    SET `Password` = :pw
-    WHERE `Id` = :id;";
+    SET `Password` = (:pw)
+    WHERE `Id` = (:id);";
 
     $query2 = $dbh->prepare($sql2);
 

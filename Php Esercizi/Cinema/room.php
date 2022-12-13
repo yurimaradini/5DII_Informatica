@@ -7,20 +7,11 @@
     <title>The Rossi Cinema - Selezione posti</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    
-    <!-- <div class="flex flex-wrap flex-shrink">
-        <div class="w-52 h-10 bg-black bg-contain bg-no-repeat bg-[url('https://th.bing.com/th/id/OIP.-qpWpwXPkPBP1rfxA1tRPQHaHa?pid=ImgDet&rs=1')]"></div>
-        <div class="w-52" ></div>
-        <div class="w-52" ></div>
-        <div class="w-52" ></div>
-        <div class="w-52" ></div>
-    </div> -->
+<body class="bg-black">
 
     <form action="rent-seats.php" method="POST">
     <div class=" justify-center  flex flex-wrap flex-col ">
         
-
 <?php
     $projId = $_POST['projection'];
 
@@ -37,7 +28,7 @@
 
     $occupied_seats = $query->fetch(PDO::FETCH_ASSOC);
 
-    implode('k', $occupied_seats);
+    $occupied_array = explode(',', $occupied_seats['Occupied']);
 
     $room_seats = 50;
     $row_seats = 8;
@@ -46,16 +37,17 @@
         echo "<div class='justify-center flex flex-nowrap flex-row'>";
         for ($j = 0; $j < $row_seats && $i < $room_seats; $j++) {
             $class_attribute = "";
-            if(in_array($i, $occupied_seats)) {
-                $class_attribute = "disabled opacity-50 ";
+            if(in_array($i, $occupied_array)) {
+                $class_attribute = "pointer-events-none opacity-50 ";
             }
-            echo "<div id=".$i." onclick='select(this)' class='".$class_attribute."w-12 h-12 rounded-t-lg bg-neutral-700 mx-3 my-1 hover:bg-opacity-75 hover:scale-110 duration-75'></div>";
+            echo "<div id=".$i." onclick='select(this)' class='".$class_attribute."w-12 h-12 rounded-t-lg bg-neutral-400 mx-3 my-1 hover:bg-opacity-75 hover:scale-110 duration-75'></div>";
         $i++;
         }
     echo "</div>";
     }
 
 ?>
+        
         <input type="hidden" name="projectionId" value="<?=$projId?>">
         <input type="hidden" id="selected_buttons" name="selected_buttons" value="" >
         <button type="submit" class="group relative flex w-52 justify-center rounded-md border border-transparent bg-white border-orange-500 py-2 mt-10 mx-auto mb-10 text-sm font-medium text-black hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
@@ -70,16 +62,16 @@
             function select(button) {
                 document.getElementById('prezzo').innerText = document.getElementById('prezzo').innerText - "€";
                 console.log(document.getElementById("selected_buttons").value);
-                if(button.classList.contains("bg-red-500")) {
-                    button.classList.remove("bg-red-500");
-                    document.getElementById("selected_buttons").value = document.getElementById("selected_buttons").value.replace("k" + button.id, "");
+                if(button.classList.contains("bg-green-500")) {
+                    button.classList.remove("bg-green-500");
+                    document.getElementById("selected_buttons").value = document.getElementById("selected_buttons").value.replace("," + button.id, "");
                     
                     prezzo = prezzo - 7.99;
                     document.getElementById('prezzo').innerText = Math.floor(prezzo * 100)/100 + "€";
                     return;
                 }
-                button.classList.add("bg-red-500");
-                document.getElementById("selected_buttons").value += "k" + button.id;
+                button.classList.add("bg-green-500");
+                document.getElementById("selected_buttons").value += "," + button.id;
                 prezzo = prezzo + 7.99;
                 document.getElementById('prezzo').innerText = Math.ceil(prezzo * 100)/100  + "€";
             }

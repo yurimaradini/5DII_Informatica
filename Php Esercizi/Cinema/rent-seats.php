@@ -1,13 +1,11 @@
 <?php
-echo "hello";
     $occupied_seats = strval($_POST['selected_buttons']);
     $projId = $_POST['projectionId'];
-    echo $projId;
-echo $occupied_seats;
+    
     require_once 'dbconfig.php';
 
     $sql = "UPDATE `projections`
-            SET `Occupied` = Occupied + (:occupied_seats)
+            SET `Occupied` = CONCAT(Occupied, :occupied_seats)            
             WHERE `Id` = (:Id);";
 
     $query = $dbh->prepare($sql);
@@ -17,5 +15,5 @@ echo $occupied_seats;
 
     $query->execute();
 
-//header("location:home.php");
+    header("location:home.php");
 ?>

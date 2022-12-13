@@ -10,7 +10,7 @@
     <title>The Rossi Cinema - Home</title>
 </head>
 
-<body>
+<body class="bg-black">
   <nav class="flex justify-between">
     <img src="../Cinema/assets/images.jfif">
     <form action="index.html">
