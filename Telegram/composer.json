@@ -1,0 +1,6 @@
+{
+    "require": {
+        "irazasyed/telegram-bot-sdk": "^2.3",
+        "beyondcode/expose": "^2.5"
+    }
+}
