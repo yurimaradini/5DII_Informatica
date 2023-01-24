@@ -1,4 +1,12 @@
 <?php
+//TODO ricerca partite per nome squadra
+
+
+
+
+
+
+
 require 'vendor/autoload.php';
 use Telegram\Bot\Api;
 
