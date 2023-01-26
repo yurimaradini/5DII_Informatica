@@ -10,7 +10,7 @@
 require 'vendor/autoload.php';
 use Telegram\Bot\Api;
 
-$api_key = "5941177584:AAHbMHYuN_tbeOptcsRmOJ3eEs3mKpWMM1E";
+$api_key = "5941177584:AAHbMHYuN_tbeOptcsRmOJ3eYs3mKpWMM1Y";
 $client = new Api($api_key);
 /* per l'attivazione del long polling memorizziamo
 l'id dell'ultimo update elaborato */
