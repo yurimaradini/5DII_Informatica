@@ -20,7 +20,7 @@ l'id dell'ultimo update elaborato */
 $last_update_id=0;
 while(true){
     // leggiamo gli ultimi update ottenuti
-	$response = $client->getUpdates(['offset'=>$last_update_id, 'timeout'=>5]);
+	$response = $client->getUpdates(['offset'=>$last_update_id, 'timeout'=>3]);
 	if (count($response)<=0) continue;
 	/* per ogni update scaricato restituiamo il messaggio
 	sulla stessa chat su cui è stato ricevuto */
@@ -78,12 +78,12 @@ while(true){
 		}
 		else {
 			//se il record esiste nel db
-			// if (!empty(Capsule::table('cronologia')->where('txt', '=', strtoupper($text))->get())) {
-			// 	$get = Capsule::table('cronologia')->where('txt', '=', strtoupper($text))->get();				
-			// 	sendTelegram($chatId, $get[0]->res);
-			// }
-			// //se non esiste
-			// else {
+			if (!empty(Capsule::table('cronologia')->where('txt', '=', strtoupper($text))->get())) {
+				$get = Capsule::table('cronologia')->where('txt', '=', strtoupper($text))->get();				
+				sendTelegram($chatId, $get[0]->res);
+			}
+			//se non esiste
+			else {
 
 				$countriesId = [47, 19, 43, 21, 1];
 				$countryIndex = 0;
@@ -93,7 +93,6 @@ while(true){
 				$teamId = null;
 
 				$page = 1;
-				//			$res = json_decode(file_get_contents('https://livescore-api.com/api-client/teams/list.json?key=EC1cUn35m2S80WdY&secret=MJZysWmZywk6cHxQky3fW7ki9cra8E8V&country_id=47'), true);
 
 				while ($teamId == null) {
 
@@ -129,12 +128,12 @@ while(true){
 				$finalMsg = findMatch($teamId);
 				sendTelegram($chatId, $finalMsg);
 
-				// Capsule::table('cronologia')->insert([
+				Capsule::table('cronologia')->insert([
 
-				// 	'txt' => strtoupper($text),
-				// 	'res' => $finalMsg
-				// ]);
-			//}
+					'txt' => strtoupper($text),
+					'res' => $finalMsg
+				]);
+			}
 		}
 	}
 }
@@ -161,15 +160,13 @@ function findMatch($teamId) {
 			$page--;
 
 			$res = json_decode(file_get_contents($matchUrl . "&team=" . $teamId . "&page=" . $page), true);
-			//$data = $res['data'];
+
 			$matches = $res['data']['match'];
 		}
 		
 	}
 	return $completeMessage;
 	
-	// 		sendMatch($chatId, $giornoPartita, $squadre, $risultato, $marcatori);
-
 }
 function writeMatch($match) {
 	$giornoPartita = "📆Giorno: " . $match['date'];
