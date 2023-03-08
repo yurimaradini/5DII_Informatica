@@ -25,6 +25,6 @@ class News extends Model
 
     public function likes()
     {
-    	return $this->hasMany(Like::class)->where('news_id', $id)->count();// = Like::where('news_id', $id)->count();
+        return $this->hasMany(Like::class)->where('news_id', $this->id)->count();
 	}
 }

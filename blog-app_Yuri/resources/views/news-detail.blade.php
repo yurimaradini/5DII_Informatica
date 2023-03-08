@@ -27,6 +27,9 @@
                 <input type="text" name="comment" class="form-control">
                 <div class="row justify-content-md-center">
                   <input type="submit" value="Send" class="form-control" style="width:200px;">
+                  @if (true)
+                    <input type="checkbox" name="like">
+                  @endif
                 </div>
               </form>
             </div>

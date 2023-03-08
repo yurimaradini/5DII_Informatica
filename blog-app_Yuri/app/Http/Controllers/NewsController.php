@@ -96,6 +96,7 @@ class NewsController extends Controller
 
     public function getLikesByNews($id) 
     {
+        $likes = News::find($id)->likes();
         //-----------------?------------------
         //$likes = News::find($id)->likes()->with
     }

@@ -25,8 +25,8 @@ class newComment
 
     public function broadcastOn()
     {
-        $notification = $username . "ha detto: " . $message;
+        $notification = $this->username . "ha detto: " . $this->message;
         //return new PrivateChannel('channel-name');
-        return ['my-channel']
+        return ['my-channel'];
     }
 }
