@@ -33,7 +33,7 @@ while(true){
 		$user = $message->getFrom();
 		
 
-		// echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+		// 
 		// if (Capsule::table('users')->where('telegram_id', '=', $user->getId())->get() == []) {
 		// 	echo "##########################################";
 
@@ -45,7 +45,6 @@ while(true){
 		// 		'telegram_id' => $user->getId()
 		// 	]);
 		// 	//(['name' => 'John']);
-		// 	echo "-----------------------------------------------------------------------------------------------";
 		// }
 		$chatId=$message->getChat()->getId();
 		$text=$message->getText();
@@ -60,8 +59,7 @@ while(true){
 		// 							->get(),
 		// 	'giorno' => $message->getDate(),
 		// 	'txt' => $text]);
-
-		// 	echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+		
 
 		if($text == "/start") {
 			sendTelegram($chatId, "Benvenuto, di che squadra vuoi sapere gli ulitmi risultati?");
@@ -78,8 +76,9 @@ while(true){
 		}
 		else {
 			//se il record esiste nel db
-			if (!empty(Capsule::table('cronologia')->where('txt', '=', strtoupper($text))->get())) {
-				$get = Capsule::table('cronologia')->where('txt', '=', strtoupper($text))->get();				
+			if (!empty(Capsule::table('cronologia')->where('txt', '=', strtoupper($text))->get()->toArray())) {
+				$get = Capsule::table('cronologia')->where('txt', '=', strtoupper($text))->get()->toArray();
+				
 				sendTelegram($chatId, $get[0]->res);
 			}
 			//se non esiste
@@ -104,6 +103,7 @@ while(true){
 
 					//ricerca lista di squadre per country e per pagina
 					$res = json_decode(file_get_contents($teamsUrl . "&country_id=" . $countriesId[$countryIndex] . "&page=" . $page), true);
+					
 					$data = $res['data'];
 					$teams = $data['teams'];
 
@@ -128,11 +128,13 @@ while(true){
 				$finalMsg = findMatch($teamId);
 				sendTelegram($chatId, $finalMsg);
 
+				
 				Capsule::table('cronologia')->insert([
 
 					'txt' => strtoupper($text),
 					'res' => $finalMsg
 				]);
+				
 			}
 		}
 	}

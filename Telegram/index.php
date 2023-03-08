@@ -1,12 +1,12 @@
 <?php
 //--------DATABASE------------------------------------
 require_once 'vendor/autoload.php';
-require_once 'db.php';
+
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Support\Str;
 
-
+require_once 'db.php';
 //--------------------------------------------
 //--------TELEGRAM------------------------------------
 

@@ -2,95 +2,80 @@
 
 namespace Telegram\Bot\Laravel;
 
-use Telegram\Bot\Api;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Container\Container as Application;
-use Laravel\Lumen\Application as LumenApplication;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Foundation\Application as LaravelApplication;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application as LumenApplication;
+use Telegram\Bot\Api;
+use Telegram\Bot\BotsManager;
+use Telegram\Bot\Laravel\Artisan\WebhookCommand;
 
 /**
  * Class TelegramServiceProvider.
  */
-class TelegramServiceProvider extends ServiceProvider
+class TelegramServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
-    /**
-     * Holds path to Config File.
-     *
-     * @var string
-     */
-    protected $config_filepath;
-
-    /**
-     * Bootstrap the application events.
-     */
-    public function boot()
-    {
-        $this->setupConfig($this->app);
-    }
-    
-    /**
-     * Setup the config.
-     *
-     * @param \Illuminate\Contracts\Container\Container $app
+     * Register the service provider.
      *
      * @return void
      */
-    protected function setupConfig(Application $app)
-    {
-        $source = __DIR__.'/config/telegram.php';
-
-        if ($app instanceof LaravelApplication && $app->runningInConsole()) {
-            $this->publishes([$source => config_path('telegram.php')]);
-        } elseif ($app instanceof LumenApplication) {
-            $app->configure('telegram');
-        }
-
-        $this->mergeConfigFrom($source, 'telegram');
-    }
-    
-    /**
-     * Register the service provider.
-     */
     public function register()
     {
-        $this->registerTelegram($this->app);
+        $this->configure();
+        $this->offerPublishing();
+        $this->registerBindings();
+        $this->registerCommands();
     }
 
     /**
-     * Initialize Telegram Bot SDK Library with Default Config.
-     *
-     * @param Application $app
+     * Setup the configuration.
      */
-    protected function registerTelegram(Application $app)
+    protected function configure()
     {
-        $app->singleton(Api::class, function ($app) {
-            $config = $app['config'];
+        $this->mergeConfigFrom(__DIR__ . '/config/telegram.php', 'telegram');
+    }
 
-            $telegram = new Api(
-                $config->get('telegram.bot_token', false),
-                $config->get('telegram.async_requests', false),
-                $config->get('telegram.http_client_handler', null)
-            );
+    /**
+     * Setup the resource publishing groups.
+     */
+    protected function offerPublishing()
+    {
+        if ($this->app instanceof LaravelApplication && $this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__ . '/config/telegram.php' => config_path('telegram.php'),
+            ], 'telegram-config');
+        } elseif ($this->app instanceof LumenApplication) {
+            $this->app->configure('telegram');
+        }
+    }
 
-            // Register Commands
-            $telegram->addCommands($config->get('telegram.commands', []));
-
-            // Check if DI needs to be enabled for Commands
-            if ($config->get('telegram.inject_command_dependencies', false)) {
-                $telegram->setContainer($app);
-            }
-
-            return $telegram;
+    /**
+     * Register bindings in the container.
+     */
+    protected function registerBindings()
+    {
+        $this->app->singleton(BotsManager::class, static function ($app) {
+            return (new BotsManager(config('telegram')))->setContainer($app);
         });
+        $this->app->alias(BotsManager::class, 'telegram');
 
-        $app->alias(Api::class, 'telegram');
+        $this->app->bind(Api::class, static function ($app) {
+            return $app[BotsManager::class]->bot();
+        });
+        $this->app->alias(Api::class, 'telegram.bot');
+    }
+
+    /**
+     * Register the Artisan commands.
+     */
+    protected function registerCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                WebhookCommand::class,
+            ]);
+        }
     }
 
     /**
@@ -100,6 +85,6 @@ class TelegramServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['telegram', Api::class];
+        return [BotsManager::class, Api::class, 'telegram', 'telegram.bot'];
     }
 }
