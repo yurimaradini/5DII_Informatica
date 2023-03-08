@@ -32,7 +32,11 @@ Route::get('news/category/{category}', [NewsController::class, 'getNewsByCategor
 
 Route::post('news/{id}/comment', [NewsController::class, 'newComment'])->name('new-comment');
 
+Route::post('news/{id}/like', [NewsController::class, 'newLike'])->name('new-like');
+
 Route::get('news/{id}/comments', [NewsController::class, 'getCommentsByNews'])->name('news-comments');
+
+Route::get('news/{id}/likes', [NewsController::class, 'getLikesByNews'])->name('news-likes');
 
 /******************************************************************************/
 /**************** AUTH ********************************************************/

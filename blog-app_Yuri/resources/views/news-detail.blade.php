@@ -27,13 +27,19 @@
                 <input type="text" name="comment" class="form-control">
                 <div class="row justify-content-md-center">
                   <input type="submit" value="Send" class="form-control" style="width:200px;">
-                  @if (true)
-                    <input type="checkbox" name="like">
-                  @endif
                 </div>
+              </form>
+              <form id="new-like">
+                @csrf()
+                @if (true)
+                    <input type="checkbox" name="like" onchange="document.getElementById('new-like').submit()">
+                @endif
               </form>
             </div>
             @endif
+            <div id="likes-container">
+
+            </div>
             <div id="comments-container">
             
             </div>
@@ -56,15 +62,39 @@
         @if(Session::get('logged'))
         <script>
           (() => {
-            let form = document.getElementById("new-comment");
+            //--------------COMMENT-------------------
+            let commentForm = document.getElementById("new-comment");
 
-            form.addEventListener("submit", (e) => {
+            commentForm.addEventListener("submit", (e) => {
 
               e.preventDefault();
 
-              const formData = new FormData(form);
+              const formData = new FormData(commentForm);
 
               fetch("{{ route('new-comment', $news->id) }}", {
+                method: "POST",
+                body: formData,
+              })
+                .then((response) => response.json())
+                .then((result) => {
+                  console.log("Success:", result);
+                })
+                .catch((error) => {
+                  console.error("Error:", error);
+                });
+
+            });
+
+            //--------------LIKE-------------------
+            let likeForm = document.getElementById("new-like");
+            
+            likeForm.addEventListener("submit", (e2) => {
+
+              e2.preventDefault();
+
+              const formData = new FormData(likeForm);
+
+              fetch("{{ route('new-like', $news->id) }}", {
                 method: "POST",
                 body: formData,
               })
@@ -115,6 +145,34 @@
               });
           }
 
+          //------------------LIKE---------------------
+
+          function getLikes() {
+
+          fetch("{{ route('news-likes', $news->id) }}")
+            .then((response) => response.json())
+            .then((likes) => {
+              console.log(likes);
+              let container = document.getElementById('likes-container');
+        throw new Error("likes: " + likes)
+              container.innerHTML = "LIKES: " + likes;
+
+              // for(let i = 0; i < comments.length; i++) {
+              //   let html = '<div class="col-md-12">' +
+              //     '<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">' +
+              //       '<div class="col p-4 d-flex flex-column position-static">' +
+              //         '<strong class="d-inline-block mb-2 text-primary"><strong>' + comments[i].user.name + '</strong>' +
+              //         '<div class="mb-1 text-muted">' + comments[i].humanDate + '</div>' +
+              //         '<p>' + comments[i].comment + '</p>' +
+              //       '</div>' +
+              //     '</div>' +
+              //   '</div>';
+
+              //   container.innerHTML += html;
+              // }
+            });
+          }
+
           // Enable pusher logging - don't include this in production
           Pusher.logToConsole = true;
 
@@ -142,6 +200,25 @@
           });
 
           getComments();
+
+          channel.bind('new-like', function(data) {
+
+            Toastify({
+              text: "",
+              duration: 3000,
+              gravity: "bottom", // `top` or `bottom`
+              position: "right", // `left`, `center` or `right`
+              stopOnFocus: true, // Prevents dismissing of toast on hover
+              style: {
+                background: "linear-gradient(to right, #ffb09b, #96c93d)",
+              },
+              onClick: function(){} // Callback after click
+            }).showToast();
+
+            getLikes();
+            });
+
+            getLikes();
         </script>
     </body>
 </html>

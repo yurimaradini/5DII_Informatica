@@ -7,6 +7,7 @@ use App\Models\News;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Models\Like;
 use Illuminate\Support\Facades\DB;
 
 class NewsController extends Controller
@@ -97,7 +98,37 @@ class NewsController extends Controller
     public function getLikesByNews($id) 
     {
         $likes = News::find($id)->likes();
-        //-----------------?------------------
-        //$likes = News::find($id)->likes()->with
+        dd($likes);
+        return $likes;
+    }
+
+    public function newLike($id, Request $request) {
+        if(!$request->session()->get('logged')) {
+            return false;
+        }
+
+        $user = $request->session()->get('user');
+
+        $like = Like::create([
+            'user_id' => $user->id,
+            'news_id' => $id,
+        ]);
+
+        $options = [
+          'cluster' => env('PUSHER_APP_CLUSTER'),
+          'useTLS' => false
+        ];
+
+        $app_key = env("PUSHER_APP_KEY");
+        $app_secret = env("PUSHER_APP_SECRET");
+        $app_id = env("PUSHER_APP_ID");
+
+        $pusher = new \Pusher\Pusher($app_key, $app_secret, $app_id, $options);
+
+        //$like['user_name'] = $user->name;
+
+        $pusher->trigger('post-' . $id, 'new-like', $like);
+
+        return $like;
     }
 }
